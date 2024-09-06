@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from films.models import Genre, Film, Person
+from films.models import Genre, Film, Person, WatchedFilms, PlanFilms
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -36,3 +36,26 @@ class FilmSerializer(serializers.ModelSerializer):
             'genre',
             'person',
         )
+
+
+class WatchedFilmListSerializer(serializers.ModelSerializer):
+    film = FilmSerializer(read_only=True)
+
+    class Meta:
+        model = WatchedFilms
+        fields = ('film', 'user_rating')
+        
+        
+class WatchedFilmAddSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = WatchedFilms
+        fields = ('film', 'user_rating')
+
+
+class PlanFilmSerializer(serializers.ModelSerializer):
+    film = FilmSerializer(read_only=True)
+    
+    class Meta:
+        model = PlanFilms
+        fields = ('film')
