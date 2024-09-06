@@ -4,6 +4,8 @@ from films.models import Genre, Film, Person, WatchedFilms, PlanFilms
 
 
 class GenreSerializer(serializers.ModelSerializer):
+    """Сериализатор для Жанров."""
+
     # name = serializers.CharField(source='genre')
 
     class Meta:
@@ -12,6 +14,7 @@ class GenreSerializer(serializers.ModelSerializer):
 
 
 class PersonSerializer(serializers.ModelSerializer):
+    """Сериализатор для Персон."""
 
     class Meta:
         model = Person
@@ -19,6 +22,8 @@ class PersonSerializer(serializers.ModelSerializer):
 
 
 class FilmSerializer(serializers.ModelSerializer):
+    """Сериализатор для Фильмов."""
+
     type = serializers.StringRelatedField(read_only=True)
     country = serializers.StringRelatedField(read_only=True)
     genre = GenreSerializer(read_only=True, many=True)
@@ -39,23 +44,28 @@ class FilmSerializer(serializers.ModelSerializer):
 
 
 class WatchedFilmListSerializer(serializers.ModelSerializer):
+    """Сериализатор для списка просмотренных фильмов.
+    Используется для чтения.
+    """
+
     film = FilmSerializer(read_only=True)
 
     class Meta:
         model = WatchedFilms
-        fields = ('film', 'user_rating')
-        
-        
+        fields = ('user', 'film', 'user_rating')
+
+
 class WatchedFilmAddSerializer(serializers.ModelSerializer):
-    
+    """Сериализатор для добавления просмотренного фильма."""
+
     class Meta:
         model = WatchedFilms
         fields = ('film', 'user_rating')
 
 
-class PlanFilmSerializer(serializers.ModelSerializer):
+class PlanFilmListSerializer(serializers.ModelSerializer):
     film = FilmSerializer(read_only=True)
-    
+
     class Meta:
         model = PlanFilms
-        fields = ('film')
+        fields = ('user', 'film')

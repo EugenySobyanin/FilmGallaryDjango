@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import filters
 from rest_framework import viewsets
 
-from .serializers import FilmSerializer, WatchedFilmListSerializer, WatchedFilmAddSerializer
-from films.models import Film, WatchedFilms
+from .serializers import FilmSerializer, WatchedFilmListSerializer, WatchedFilmAddSerializer, PlanFilmListSerializer
+from films.models import Film, WatchedFilms, PlanFilms
 
 
 class FilmViewSet(viewsets.ReadOnlyModelViewSet):
@@ -22,5 +22,18 @@ class WatchedFilmViewSet(viewsets.ModelViewSet):
             return WatchedFilmListSerializer
         return WatchedFilmAddSerializer
 
-    # def get_queryset(self):
-    #     return Film.objects.filter(user=self.request.user)
+    def get_queryset(self):
+        return WatchedFilms.objects.filter(user=self.request.user)
+
+
+class PlanFilmViewSet(viewsets.ModelViewSet):
+    queryset = PlanFilms.objects.all()
+    serializer_class = PlanFilmListSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return PlanFilmListSerializer
+        return WatchedFilmAddSerializer
+
+    def get_queryset(self):
+        return PlanFilms.objects.filter(user=self.request.user)
