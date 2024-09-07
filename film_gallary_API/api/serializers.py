@@ -64,8 +64,20 @@ class WatchedFilmAddSerializer(serializers.ModelSerializer):
 
 
 class PlanFilmListSerializer(serializers.ModelSerializer):
+    """Сериализатор для списка планируемых фильмов.
+    Используется для чтения.
+    """
+
     film = FilmSerializer(read_only=True)
 
     class Meta:
         model = PlanFilms
         fields = ('user', 'film')
+
+
+class PlanFilmAddSerializer(serializers.ModelSerializer):
+    """Сериализатор для добавления планируемого фильма."""
+
+    class Meta:
+        model = PlanFilms
+        fields = ('film', )

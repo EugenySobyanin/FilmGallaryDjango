@@ -63,6 +63,9 @@ class Film(models.Model):
     genre = models.ManyToManyField(Genre, through='FilmGenre')
     person = models.ManyToManyField(Person, through='FilmPerson')
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class FilmGenre(models.Model):
     """Промежуточная таблица для связи 'Многие ко многим' для фильмов и жанров."""
@@ -76,6 +79,9 @@ class FilmGenre(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self) -> str:
+        return f'{self.film} - {self.genre}'
+
 
 class FilmPerson(models.Model):
     """Промежуточная таблица для связи 'Многие ко многим' для фильмов и персон."""
@@ -88,6 +94,9 @@ class FilmPerson(models.Model):
         Person,
         on_delete=models.CASCADE
     )
+
+    def __str__(self) -> str:
+        return f'{self.film} - {self.person}'
 
 
 class WatchedFilms(models.Model):
@@ -108,6 +117,9 @@ class WatchedFilms(models.Model):
         decimal_places=1
     )
 
+    def __str__(self) -> str:
+        return f'{self.user} - {self.film}'
+
 
 class PlanFilms(models.Model):
     """Промежуточная таблица для свзяи ''Многие ко многим'
@@ -121,3 +133,6 @@ class PlanFilms(models.Model):
         Film,
         on_delete=models.CASCADE
     )
+
+    def __str__(self) -> str:
+        return f'P{self.user} - {self.film}'
