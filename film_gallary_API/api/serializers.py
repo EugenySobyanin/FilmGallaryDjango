@@ -32,6 +32,7 @@ class FilmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Film
         fields = (
+            'id',
             'title',
             'rating_kp',
             'rating_imdb',
