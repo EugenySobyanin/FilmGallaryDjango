@@ -1,9 +1,13 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from rest_framework import filters
 from rest_framework import viewsets
 
 from .serializers import FilmSerializer, WatchedFilmListSerializer, WatchedFilmAddSerializer, PlanFilmListSerializer, PlanFilmAddSerializer
 from films.models import Film, WatchedFilms, PlanFilms
+
+
+User = get_user_model()
 
 
 class FilmViewSet(viewsets.ReadOnlyModelViewSet):
@@ -23,10 +27,13 @@ class WatchedFilmViewSet(viewsets.ModelViewSet):
         return WatchedFilmAddSerializer
 
     def get_queryset(self):
-        return WatchedFilms.objects.filter(user=self.request.user)
+        # return WatchedFilms.objects.filter(user=self.request.user)
+        return WatchedFilms.objects.filter(user=User.objects.get(pk=1))
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        # serializer.save(user=self.request.user)
+        print('Попали в метод перформ-криэйт.')
+        serializer.save(user=User.objects.get(pk=1))
 
 
 class PlanFilmViewSet(viewsets.ModelViewSet):
