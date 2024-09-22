@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from films.models import Genre, Film, Person, WatchedFilms, PlanFilms
+from films.models import Country, Genre, Film, Person, WatchedFilms, PlanFilms
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -25,7 +25,12 @@ class FilmSerializer(serializers.ModelSerializer):
     """Сериализатор для Фильмов."""
 
     type = serializers.StringRelatedField(read_only=True)
-    country = serializers.StringRelatedField(read_only=True)
+    # country = serializers.StringRelatedField(read_only=True)
+    country = serializers.SlugRelatedField(
+        queryset=Country.objects.all(),
+        slug_field='name',
+        many=True
+    )
     genre = GenreSerializer(read_only=True, many=True)
     person = PersonSerializer(read_only=True, many=True)
 
@@ -34,9 +39,11 @@ class FilmSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'title',
+            'description',
             'rating_kp',
             'rating_imdb',
             'release_year',
+            'movie_length',
             'type',
             'country',
             'genre',

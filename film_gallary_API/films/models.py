@@ -34,7 +34,13 @@ class Person(models.Model):
 
 
 class Film(models.Model):
+    kinopoisk_dev_id = models.PositiveIntegerField(
+        'ID от KinopoiskAPI',
+        blank=True,
+        null=True
+    )
     title = models.CharField('Название', max_length=255)
+    description = models.TextField('Описание', blank=True)
     rating_kp = models.DecimalField(
         'Рейтинг кинопоиска',
         max_digits=2,
@@ -46,6 +52,7 @@ class Film(models.Model):
         decimal_places=1
     )
     release_year = models.IntegerField('Год выпуска')
+    movie_length = models.SmallIntegerField('Длительность', blank=True, null=True)
     type = models.ForeignKey(
         Type,
         on_delete=models.SET_NULL,
@@ -53,18 +60,25 @@ class Film(models.Model):
         null=True,
         verbose_name='Тип'
     )
-    country = models.ForeignKey(
-        Country,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name='Страна'
-    )
+    country = models.ManyToManyField(Country, through='FilmCountry')
     genre = models.ManyToManyField(Genre, through='FilmGenre')
     person = models.ManyToManyField(Person, through='FilmPerson')
 
     def __str__(self) -> str:
         return self.title
+
+
+class FilmCountry(models.Model):
+    """Промежуточная таблица для связи 'Многие ко многим' для фильмов и стран."""
+
+    film = models.ForeignKey(
+        Film,
+        on_delete=models.CASCADE
+    )
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE
+    )
 
 
 class FilmGenre(models.Model):
