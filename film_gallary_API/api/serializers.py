@@ -44,6 +44,7 @@ class FilmSerializer(serializers.ModelSerializer):
             'rating_imdb',
             'release_year',
             'movie_length',
+            'poster',
             'type',
             'country',
             'genre',

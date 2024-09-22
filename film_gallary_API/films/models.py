@@ -39,20 +39,29 @@ class Film(models.Model):
         blank=True,
         null=True
     )
-    title = models.CharField('Название', max_length=255)
-    description = models.TextField('Описание', blank=True)
+    title = models.CharField('Название', max_length=255, null=True, default=None)
+    alternative_title = models.CharField('Альтернативное название', max_length=255, null=True, default=None)
+    description = models.TextField('Описание', blank=True, null=True, default=None)
+    short_description = models.TextField('Краткое описание', blank=True, null=True, default=None)
     rating_kp = models.DecimalField(
         'Рейтинг кинопоиска',
         max_digits=2,
-        decimal_places=1
+        decimal_places=1,
+        blank=True,
+        null=True
     )
     rating_imdb = models.DecimalField(
         'Рейтинг критиков',
         max_digits=2,
-        decimal_places=1
+        decimal_places=1,
+        blank=True,
+        null=True
     )
-    release_year = models.IntegerField('Год выпуска')
+    release_year = models.IntegerField('Год выпуска', blank=True, null=True)
     movie_length = models.SmallIntegerField('Длительность', blank=True, null=True)
+    poster = models.URLField('Ссылка на постер', max_length=500, null=True, default=None)
+    logo = models.URLField('Ссылка на лого', max_length=500, null=True, default=None)
+    is_series = models.BooleanField('Сериал', default=False)
     type = models.ForeignKey(
         Type,
         on_delete=models.SET_NULL,
