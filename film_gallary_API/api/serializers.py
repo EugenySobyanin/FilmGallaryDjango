@@ -45,6 +45,7 @@ class FilmSerializer(serializers.ModelSerializer):
             'release_year',
             'movie_length',
             'poster',
+            'logo',
             'type',
             'country',
             'genre',
